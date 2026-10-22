@@ -1,0 +1,362 @@
+\documentclass[12pt,letterpaper]{article}
+\usepackage{graphicx,textcomp}
+\usepackage{natbib}
+\usepackage{setspace}
+\usepackage{fullpage}
+\usepackage{color}
+\usepackage[reqno]{amsmath}
+\usepackage{amsthm}
+\usepackage{fancyvrb}
+\usepackage{amssymb,enumerate}
+\usepackage[all]{xy}
+\usepackage{endnotes}
+\usepackage{lscape}
+\newtheorem{com}{Comment}
+\usepackage{float}
+\usepackage{hyperref}
+\newtheorem{lem} {Lemma}
+\newtheorem{prop}{Proposition}
+\newtheorem{thm}{Theorem}
+\newtheorem{defn}{Definition}
+\newtheorem{cor}{Corollary}
+\newtheorem{obs}{Observation}
+\usepackage[compact]{titlesec}
+\usepackage{dcolumn}
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+\usepackage{multirow}
+\usepackage{xcolor}
+\newcolumntype{.}{D{.}{.}{-1}}
+\newcolumntype{d}[1]{D{.}{.}{#1}}
+\definecolor{light-gray}{gray}{0.65}
+\usepackage{url}
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+	backgroundcolor=\color{backcolour},   
+	commentstyle=\color{codegreen},
+	keywordstyle=\color{magenta},
+	numberstyle=\tiny\color{codegray},
+	stringstyle=\color{codepurple},
+	basicstyle=\footnotesize,
+	breakatwhitespace=false,         
+	breaklines=true,                 
+	captionpos=b,                    
+	keepspaces=true,                 
+	numbers=left,                    
+	numbersep=5pt,                  
+	showspaces=false,                
+	showstringspaces=false,
+	showtabs=false,                  
+	tabsize=2
+}
+\lstset{style=mystyle}
+\newcommand{\Sref}[1]{Section~\ref{#1}}
+\newtheorem{hyp}{Hypothesis}
+
+\title{Problem Set 2}
+\date{Due: October 22, 2026}
+\author{Applied Stats/Quant Methods 1}
+
+\begin{document}
+	\maketitle
+	\section*{Instructions}
+\begin{itemize}
+	\item Please show your work! You may lose points by simply writing in the answer. If the problem requires you to execute commands in \texttt{R}, please include the code you used to get your answers. Please also include the \texttt{.R} file that contains your code. If you are not sure if work needs to be shown for a particular problem, please ask.
+	\item Your homework should be submitted electronically on GitHub.
+	\item This problem set is due before 23:59 on Thursday October 22, 2026. No late assignments will be accepted.
+
+\end{itemize}
+
+	
+	\vspace{.5cm}
+	\section*{Question 1: Political Science}
+		\vspace{.25cm}
+	The following table was created using the data from a study run in a major Latin American city.\footnote{Fried, Lagunes, and Venkataramani (2010). ``Corruption and Inequality at the Crossroad: A Multimethod Study of Bribery and Discrimination in Latin America. \textit{Latin American Research Review}. 45 (1): 76-97.} As part of the experimental treatment in the study, one employee of the research team was chosen to make illegal left turns across traffic to draw the attention of the police officers on shift. Two employee drivers were upper class, two were lower class drivers, and the identity of the driver was randomly assigned per encounter. The researchers were interested in whether officers were more or less likely to solicit a bribe from drivers depending on their class (officers use phrases like, ``We can solve this the easy way'' to draw a bribe). The table below shows the resulting data.
+
+\newpage
+\begin{table}[h!]
+	\centering
+	\begin{tabular}{l | c c c }
+		& Not Stopped & Bribe requested & Stopped/given warning \\
+		\\[-1.8ex] 
+		\hline \\[-1.8ex]
+		Upper class & 14 & 6 & 7 \\
+		Lower class & 7 & 7 & 1 \\
+		\hline
+	\end{tabular}
+\end{table}
+
+\begin{enumerate}
+	
+	\item [(a)]
+	Calculate the $\chi^2$ test statistic by hand/manually (even better if you can do "by hand" in \texttt{R}).\\
+	\begin{enumerate}[]
+		\item \textbf{Hypothesis}
+			 \begin{itemize}
+				\item \(H_0\): A driver's class is statistically independent from the solicitation of bribes by police officers.
+				
+				\item \(H_a\): A driver's class and the solicitation of bribes by police officers are statistically dependent.
+			\end{itemize}
+		\vspace{.5cm}
+		
+		 
+		\item \textbf{Observed Counts}
+			\begin{table}[h!]
+				\centering
+				\begin{tabular}{l | c c c | c}
+					& Not Stopped & Bribe requested & Stopped/given warning & Total \\
+					\\[-1.8ex] 
+					\hline \\[-1.8ex]
+					Upper class & 14 & 6 & 7 & 27 \\
+					Lower class & 7 & 7 & 1 & 15 \\
+					\hline \\[-1.8ex]
+					Total       & 21 & 13 & 8 & 42 \\
+					\hline
+				\end{tabular}
+			\end{table} 
+		\item Below, I show how I used R to get the rows and column totals for the given data.\\	
+			
+			\lstinputlisting[language=R, firstline=10, lastline=27]{PS02_answersAS.R}
+			
+		\vspace{.5cm}
+		\item \textbf{Expected Counts}
+		\item I calculated each of the expected counts by multiplying the row total by the column total for each of the frequencies and dividing that by the total number of observations (which is 42).\\
+			\begin{equation}
+			E = \frac{(\text{Row Total})(\text{Column Total})}
+			{\text{Grand Total}}
+			\end{equation}
+			
+			\begin{table}[h!]
+				\centering
+				\begin{tabular}{l | c c c | c}
+					& Not Stopped & Bribe requested & Stopped/given warning & Total \\
+					\\[-1.8ex] 
+					\hline \\[-1.8ex]
+					Upper class & 13.50 & 8.36 & 5.14 & 27 \\
+					Lower class & 7.50 & 4.64 & 2.86 & 15 \\
+					\hline \\[-1.8ex]
+					Total       & 21 & 13 & 8 & 42 \\
+					\hline
+				\end{tabular}
+				\caption{Expected frequencies}
+			\end{table}
+		\lstinputlisting[language=R, firstline=30, lastline=41]{PS02_answersAS.R}
+			
+		\vspace{.5cm}
+		\item \textbf{$\chi^2$ test statistic}
+		\item The $\chi^2$ test statistic is used to test the statistical independence of two categorical variables. The following statistic represents the discrepancy between the expected frequencies and the frequencies that were actually observed. It is calculated by summing the squared differences between the observed and expected frequencies divided by the expected. \\
+		  
+		\begin{equation}
+			\chi^2 = \sum \frac{(f_O - f_E)^2}{f_E}
+		\end{equation}
+		
+		\lstinputlisting[language=R, firstline=45, lastline=46]{PS02_answersAS.R}
+		\begin{table}[h!]
+			\centering
+			\begin{tabular}{l | c c c}
+				& Not Stopped & Bribe requested & Stopped/given warning \\
+				\\[-1.8ex] 
+				\hline \\[-1.8ex]
+				Upper class & 0.25 & 5.56 & 3.45 \\
+				Lower class & 0.25 & 5.56 & 3.45 \\
+				\hline
+			\end{tabular}
+			\caption{Squared differences $(f_O - f_E)^2$}
+		\end{table}
+		\begin{equation}
+			\chi^2 = \frac{0.25}{13.5} + \frac{0.25}{7.5} + \frac{5.56}{8.36} + \frac{5.56}{4.64} + \frac{3.45}{5.14} + \frac{3.45}{2.86}
+		\end{equation}
+		\begin{equation}
+			\chi^2 = 3.791168
+		\end{equation}
+	\end{enumerate}	
+		
+	
+	
+	\item [(b)]
+	Now calculate the p-value from the test statistic you just created (in \texttt{R}).\footnote{Remember frequency should be $>$ 5 for all cells, but let's calculate the p-value here anyway.}  What do you conclude if $\alpha = 0.1$?\\
+	\begin{enumerate}[]
+		\item  
+		\item \textbf{Degrees of Freedom}
+		\item \lstinputlisting[language=R, firstline=55, lastline=56]{PS02_answersAS.R}
+		\begin{equation}
+			df = (number of rows -1)(number of columns -1) = (2-1)(3-1) = 2
+		\end{equation}
+		
+		
+		\vspace{.5cm}
+		\item \textbf{P-Value}
+		\item \lstinputlisting[language=R, firstline=59, lastline=60]{PS02_answersAS.R}
+		\begin{equation*}
+			P Value = 0.1502306
+		\end{equation*}
+		
+		
+		\ A p-value is the probability, assuming the null hypothesis is true, of obtaining a test statistic at least as extreme as the observed one. Only the upper tail is used for the chi squared p-value since the test statistic is squared and therefore always positive. \\
+		 
+		\vspace{.5cm}
+		\item \textbf{Conclusion:}
+		
+		\ Since the p-value $= 0.1502$ is greater than the given significance level of $\alpha = 0.1$, we fail to reject the null hypothesis. Therefore, there is insufficient evidence to conclude that there is an association between a driver's class and the solicitation of bribes by police officers.\\
+		
+		\lstinputlisting[language=R, firstline= 63, lastline= 64]{PS02_answersAS.R}
+		\ I used the above function in R to check my work 
+\end{enumerate}
+	
+	\newpage
+	\item [(c)] Calculate the standardized residuals for each cell and put them in the table below.
+	
+	\vspace{1cm}
+	
+	\ In this case, a residual is a measurement of how far the observed count is from the expected if class and police interactions were independent. it is calculated by subtracting a cell's expected value from the observed and dividing that by the square root of the standard error. 
+	
+	\begin{equation}
+		z = \frac{f_o - f_e}{se}
+	\end{equation}
+	
+	where the standard error is
+	
+	\begin{equation}
+		se = \sqrt{f_e\,\left(1 - \text{row prop.}\right)\left(1 - \text{column prop.}\right)}
+	\end{equation}
+	
+	and the proportions are
+	
+	\begin{equation}
+		\text{row prop.} = \frac{\text{row total}}{\text{grand total}}
+		\qquad
+		\text{column prop.} = \frac{\text{column total}}{\text{grand total}}
+	\end{equation}
+	
+	
+	\begin{table}[h]
+		\centering
+		\begin{tabular}{l | c c c }
+			& Not Stopped & Bribe requested & Stopped/given warning \\
+			\\[-1.8ex] 
+			\hline \\[-1.8ex]
+			Upper class & 0.3220306 & -1.641957 & 1.523026\\
+			Lower class& -0.3220306 & 1.641957 & -1.523026\\	
+		\end{tabular}
+	\end{table}
+		\lstinputlisting[language=R, firstline=69, lastline= 79]{PS02_answersAS.R}
+	
+	
+	\vspace{7cm}
+	\item [(d)] How might the standardized residuals help you interpret the results? \\
+	\vspace{1cm} 
+	\item By its self, the Chi squared test shows whether there is evidence of an association between two variables, in this case there is insufficient evidence. Using standardized residuals we can determine where the deviation is and in which direction.
+	\vspace{.25cm}
+	\\
+	
+	Deviation: as previously mentioned, each residual measures how far a cell is from what the predicted value would be if the variables were independent. The “Not Stopped” cells ($+/- 0.32$) are relatively close to the predicted values. However,  The bribe ($+/- 1.64$) and warning ($+/- 1.52$) are much higher showing that those cells are where the deviation occurs.
+	\vspace{.25cm}
+	\\
+	Direction: whether a value is positive or negative shows if a cell has more or fewer observations than expected. Lower-class drivers were asked for bribes more often than expected (+1.64) and given warnings less often ($-1.52$). for upper class drivers it was the opposite, being asked for bribes less often than expected ($-1.64$) and given warnings more often than expected (+1.52) 	
+	
+	
+\end{enumerate}
+\newpage
+
+\section*{Question 2: Economics}
+Chattopadhyay and Duflo were interested in whether women promote different policies than men.\footnote{Chattopadhyay and Duflo. (2004). ``Women as Policy Makers: Evidence from a Randomized Policy Experiment in India. \textit{Econometrica}. 72 (5), 1409-1443.} Answering this question with observational data is pretty difficult due to potential confounding problems (e.g. the districts that choose female politicians are likely to systematically differ in other aspects too). Hence, they exploit a randomized policy experiment in India, where since the mid-1990s, $\frac{1}{3}$ of village council heads have been randomly reserved for women. A subset of the data from West Bengal can be found at the following link: \url{https://raw.githubusercontent.com/kosukeimai/qss/master/PREDICTION/women.csv}\\
+
+\noindent Each observation in the data set represents a village and there are two villages associated with one GP (i.e. a level of government is called "GP"). Figure~\ref{fig:women_desc} below shows the names and descriptions of the variables in the dataset. The authors hypothesize that female politicians are more likely to support policies female voters want. Researchers found that more women complain about the quality of drinking water than men. You need to estimate the effect of the reservation policy on the number of new or repaired drinking water facilities in the villages.
+\vspace{.5cm}
+\begin{table}[htbp]
+\centering
+\caption{Names and description of variables from Chattopadhyay and Duflo (2004)}
+\vspace{1cm}
+\label{tab:variables}
+\begin{tabular}{lp{10cm}}
+	\hline
+	\textbf{Variable} & \textbf{Description} \\
+	\hline
+	GP & Identifying number for the GP \\
+	Village & Identifier for the village within the GP (randomly assigned 1 or 2) \\
+	Reserved & Was the GP reserved for a female leader? (1 = yes, 0 = no) \\
+	Female & Did the GP have a female leader? (1 = yes, 0 = no) \\
+	Irrigation & Number of new or repaired irrigation facilities \\
+	Water & Number of new or repaired drinking water facilities \\
+	\hline
+\end{tabular}
+\end{table}
+
+\newpage
+\begin{enumerate}
+	\item [(a)] State a null and alternative (two-tailed) hypothesis.
+	\vspace{2cm}
+	\\
+	$H_0$: The reservation policy has no effect on the number of new or repaired drinking water facilities ($\beta_1 = 0$). 
+	\vspace{1cm}\\
+	
+	$H_a$: The reservation policy has an effect on the number of facilities ($\beta_1 \neq 0$)
+	 
+	
+	\vspace{2cm}
+	\item [(b)] Run a bivariate regression to test this hypothesis in \texttt{R} (include your code!).
+	\begin{enumerate} []
+		\item \textbf{The regression model}\\
+		Using the following r code, I made the regression model
+		\lstinputlisting[language=R, linerange=BEGIN_regression_model-END_regression_model, includerangemarker=false]{PS02_answersAS.R}
+		\item [] 
+		\ Which gave me the following coefficient calculations:	
+		\vspace{.5cm} \\
+		Intercept ($\hat{\beta}_0$) = 14.738  
+	\\
+		reserved ($\hat{\beta}_1$) = 9.252
+		\vspace{.5cm} \\
+		The regression model is:
+		\begin{equation}
+			\widehat{\text{water}} = \hat{\beta}_0 + \hat{\beta}_1 \cdot \text{reserved}
+		\end{equation}
+		
+		Plugging in those estimated coefficients, the best-fit line for the data is:
+		\begin{equation}
+			\widehat{\text{water}} = 14.738 + 9.252 \cdot \text{reserved}
+		\end{equation}
+		
+		This means for every one-unit increase in the reserved variable there is an increase of 9.25 in the number of new or repaired drinking water facilities. The intercept, 14.738, is the predicted number of facilities in an unreserved village when the reserved is 0.
+		\item []
+	
+	\vspace*{1cm}
+		\textbf{Test statistic}\\
+		The test statistic is the sampling distribution of the slope estimator which  is
+		\begin{equation}
+			\frac{\hat{\beta}_1 - \beta_1}{se_{\hat{\beta}_1}} \sim t_{n-2}
+		\end{equation}
+		
+		Under $H_0: \beta_1 = 0$, this becomes
+		\begin{equation}
+			t = \frac{\hat{\beta}_1 - 0}{se_{\hat{\beta}_1}} = \frac{9.252 - 0}{3.948} = 2.344
+		\end{equation}
+		
+		with $n - 2 = 320$ degrees of freedom.
+		\lstinputlisting[language=R, linerange=START_test_statistic-END_test_statistic, includerangemarker=false]{PS02_answersAS.R}
+		
+		\textbf{P-value} \\
+		\lstinputlisting[language=R, linerange=START_p_value-END_p_value, includerangemarker=false]{PS02_answersAS.R}
+		 p-value = $0.0197$.\\
+		
+		\textbf{Conclusion}\\
+		 Since the p-value (0.0197) is less than the significance value of  $\alpha = 0.05$, we reject the null hypothesis that $\beta_1 = 0$. Meaning, there is statistically significant evidence to reject that the reservation policy does not affect the number of new or repaired drinking water facilities. 
+		
+
+	\vspace{3cm}
+	\item [(c)] Interpret the coefficient estimate for reservation policy.\\
+	\item []
+	The estimated coefficient on the reservation policy is $\hat{\beta}_1 = 9.252$. This means that villages in GPs reserved for women have, on average, 9.25 more new or repaired drinking water facilities than villages in without reservations. Therefore, a one-unit increase in reserved (from 0 to 1) is associated with an average increase of 9.252 facilities. The intercept (reservations = 0) shows that unreserved villages have an average of 14.738 facilities.
+	
+	This estimate is statistically significant at the $5\%$ level ($p = 0.0197$), this evidence shows that we can reject the null hypothesis that the reservation policy does not affect the number of new or repaired drinking water facilities.
+	
+	 
+\end{enumerate}
+\end{enumerate}
+\end{document}
